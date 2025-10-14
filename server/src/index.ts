@@ -8,6 +8,10 @@ const port = 3000;
 app.use(express.json());
 app.use('/', userRouter);
 
+app.get('/api', (req, res) => {
+    res.send("Welcome to the startup page.");
+})
+
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });

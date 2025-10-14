@@ -1,7 +1,10 @@
 import express, { Request, Response } from 'express';
+import dotenv from 'dotenv';
 
 import UserService from '../services/user.ts';
 import { errorHandler } from '../middleware/errorHandler';
+
+dotenv.config();
 
 const userRouter = express.Router();
 

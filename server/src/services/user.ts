@@ -24,7 +24,7 @@ export default class UserService {
         const user = new userModel({username: username, password: password});
         await user.save();
         
-        userData.jwt = jwt.sign({"username": username}, process.env.TOKEN_SECRET, { expiresin: '3600s '});
+        userData.jwt = jwt.sign({ username }, process.env.TOKEN_SECRET, { expiresIn: '3600s' });
         return userData;
     }
 }

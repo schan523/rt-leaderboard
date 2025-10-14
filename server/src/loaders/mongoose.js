@@ -1,8 +1,6 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
-import { db } from './mongo.js';
-
 dotenv.config();
 
 export default async () => {
