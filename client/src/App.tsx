@@ -3,12 +3,14 @@ import './App.css'
 
 function App() {
   const [ message, setMessage ] = useState('');
+  console.log(message);
   useEffect(() => {
-    fetch('/')
-      .then((res) => res.text())
-      .then((data) => setMessage(data))
-      .catch((err) => console.log(err));
+    fetch('/api')
+      .then(res => res.text())
+      .then(data => setMessage(data))
+      .catch(err => console.error(err));
   }, []);
+
   return (
     <div>
       <h1> {message} </h1>
