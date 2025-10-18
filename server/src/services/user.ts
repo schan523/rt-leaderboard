@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import 'dotenv/config';
 
 import db from '../loaders/mongoose.js';
-import { userModel} from '../models/user.js';
+import { userModel } from '../models/user.js';
 
 export default class UserService {
     static async register(username: string, password: string) {        
