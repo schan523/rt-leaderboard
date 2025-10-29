@@ -1,7 +1,17 @@
 import { Request, Response, NextFunction } from 'express';
 
-export const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
-    if (res.headerSent) {
+export class CustomError extends Error {
+    status?: number;
+
+    constructor(public message: string, status?: number) {
+        super(message);
+        this.status = status;
+        // Object.setPrototypeOf(this, CustomError.prototype);
+    }
+}
+
+export const errorHandler = (err: CustomError, req: Request, res: Response, next: NextFunction) => {
+    if (res.headersSent) {
         return next(err);
     }
 
