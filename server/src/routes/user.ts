@@ -5,6 +5,8 @@ import UserService from '../services/user.ts';
 import { errorHandler } from '../middleware/errorHandler';
 
 const userRouter = express.Router();
+userRouter.use(express.json());
+
 
 userRouter.post('/register', async (req: Request, res: Response) => {
     const { username, password } = req.body;
