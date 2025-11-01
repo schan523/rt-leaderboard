@@ -1,5 +1,9 @@
 import { useState, useEffect } from 'react'
 import './App.css'
+import { BrowserRouter, Route, Routes } from 'react-router';
+import { Navbar } from './components/layouts/Navbar';
+import { Home } from './components/Home';
+import { Register } from './components/Register';
 
 function App() {
   const [ message, setMessage ] = useState('');
@@ -12,9 +16,13 @@ function App() {
   }, []);
 
   return (
-    <div>
-      <h1> {message} </h1>
-    </div>
+    <BrowserRouter>
+      <Navbar />
+      <Routes>
+          <Route path="/" element={ <Home /> }/>
+          <Route path="/register" element={ <Register/> }/>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
