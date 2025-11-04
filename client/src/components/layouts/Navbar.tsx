@@ -10,7 +10,9 @@ export const Navbar = () => {
             <div className="link-border">
                 <Link to="../register"> Register </Link>
             </div>
-            
+            <div className="link-border">
+                <Link to="../login"> Login </Link>
+            </div>
         </div>
     );
 }
