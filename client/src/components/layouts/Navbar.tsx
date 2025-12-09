@@ -13,6 +13,9 @@ export const Navbar = () => {
             <div className="link-border">
                 <Link to="../login"> Login </Link>
             </div>
+            <div className="link-border">
+                <Link to="../score"> Score </Link>
+            </div>
         </div>
     );
 }

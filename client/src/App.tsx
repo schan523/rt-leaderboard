@@ -5,6 +5,7 @@ import { Navbar } from './components/layouts/Navbar';
 import { Home } from './components/Home';
 import { Register } from './components/Register';
 import { Login } from './components/Login';
+import { Score } from './components/Score'
 
 function App() {
   const [ message, setMessage ] = useState('');
@@ -23,6 +24,7 @@ function App() {
           <Route path="/" element={ <Home /> }/>
           <Route path="/register" element={ <Register/> }/>
           <Route path="/login" element={ <Login /> }/>
+          <Route path="/score" element={ <Score /> } />
       </Routes>
     </BrowserRouter>
   );

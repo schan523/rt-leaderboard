@@ -1,7 +1,7 @@
 // import { useState, useEffect } from 'react';
 
 export const Register = () => {
-    async function register (formData: FormData)  {
+    async function register(formData: FormData)  {
         const data = {};
         for (const [name, value] of formData) {
             data[name] = value;
