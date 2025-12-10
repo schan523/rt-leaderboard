@@ -21,6 +21,8 @@ export const Score = () => {
                 <option value="minecraft"> Minecraft </option>
             </select>
             <br />
+            <label htmlFor="time"> Time: </label>
+            <br />
             <button type="submit"> Submit </button>
         </form>
     );
