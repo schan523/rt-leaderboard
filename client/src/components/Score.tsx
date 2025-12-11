@@ -5,9 +5,13 @@ export const Score = () => {
             data[name] = value;
         }
 
-        await fetch('/api/submit', {
+        // Need to store authorization JWT to frontend 
+        await fetch('/api/lb/submit', {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": ""
+            },
             body: JSON.stringify(data)
         })
     }
@@ -21,7 +25,14 @@ export const Score = () => {
                 <option value="minecraft"> Minecraft </option>
             </select>
             <br />
-            <label htmlFor="time"> Time: </label>
+            <span>
+                Time:
+                <input type="text" id="hours"></input>
+                :
+                <input type="text" id="minutes"></input>
+                :
+                <input type="text" id="seconds"></input>
+            </span>
             <br />
             <button type="submit"> Submit </button>
         </form>
