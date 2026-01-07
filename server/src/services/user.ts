@@ -6,6 +6,7 @@ import 'dotenv/config';
 
 import db from '../loaders/mongoose.js';
 import { userModel } from '../models/user.js';
+import { CustomError } from './errorHandler.ts';
 
 export default class UserService {
     static async register(username: string, password: string) {        
@@ -31,12 +32,19 @@ export default class UserService {
 
     static async login(username: string, password: string) {
         await db();
-        let user = await userModel.findOne({ username }).select('-_id -__v');
-        let userData: {username: string, password: string, jwt?: string} = { ...user};
-
+        let user = await userModel.findOne({ username }).select('-__v');
         if (!user || !user.password) {
             return;
         }
+
+        let userData: {username: string, password: string, id: string, access?: string, refresh?: string} = 
+        {
+             username: user.username, 
+             password: user.password, 
+             id: user._id.toString(), 
+             jwt: null
+        };
+        const userId = userData.id;
 
         const hashedPassword = user.password;
         const check = await bcrypt.compare(password, hashedPassword);
@@ -45,8 +53,25 @@ export default class UserService {
             return;
         }
 
-        userData.jwt = jwt.sign({ username }, process.env.TOKEN_SECRET, { expiresIn: '3600s' });
-        console.log(userData.jwt);
+        userData.access = jwt.sign({ username }, process.env.TOKEN_SECRET, { expiresIn: '900s' });
+        userData.refresh = jwt.sign({ userId }, process.env.TOKEN_SECRET, { expiresIn: '1d'});
+        console.log(userData);
         return userData;
+    }
+
+    static refresh(token: string | undefined) {
+        if (!token) {
+            return;
+        }
+
+        try {
+            let payload = jwt.verify(token, process.env.TOKEN_SECRET);
+        } catch (err) {
+            console.error(err);
+        }
+
+        const payload = jwt.verify(token, process.env.TOKEN_SECRET);
+
+        return jwt.sign({ payload }, process.env.TOKEN_SECRET, { expiresIn: '3600s' });
     }
 }

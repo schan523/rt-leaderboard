@@ -17,7 +17,17 @@ userRouter.post('/register', async (req: Request, res: Response) => {
 userRouter.post('/login', async (req: Request, res: Response) => {
     const { username, password } = req.body;
     const user = await UserService.login(username, password);
-    res.status(200).send(user?.jwt);
+    req.session.refreshToken = user?.refresh;
+    res.status(200).json(user?.access);
+})
+
+userRouter.post('/refresh', async (req: Request, res: Response) => {
+    // when access token expires, check for a refresh token. If not present, return "session expired". Otherwise, generate a new access token.
+    const newToken = UserService.refresh(req.session.refreshToken);
+    if (!newToken) {
+        res.status(401).send("Session expired");
+    }
+    res.send(200).json(newToken);
 })
 
 userRouter.use(errorHandler);

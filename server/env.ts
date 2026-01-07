@@ -2,7 +2,8 @@ import { z } from 'zod';
 
 const envSchema = z.object({
     ATLAS_URL: z.string(),
-    TOKEN_SECRET: z.string()
+    TOKEN_SECRET: z.string(),
+    SESSION_SECRET: z.string()
 });
 
 envSchema.parse(process.env);
