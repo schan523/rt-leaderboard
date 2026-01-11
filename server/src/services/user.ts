@@ -30,6 +30,7 @@ export default class UserService {
         return userData.jwt;
     }
 
+
     static async login(username: string, password: string) {
         await db();
         let user = await userModel.findOne({ username }).select('-__v');
@@ -59,6 +60,7 @@ export default class UserService {
         return userData;
     }
 
+    
     static refresh(token: string | undefined) {
         if (!token) {
             return;
