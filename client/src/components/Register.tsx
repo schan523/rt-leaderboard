@@ -1,5 +1,3 @@
-// import { useState, useEffect } from 'react';
-
 export const Register = () => {
     async function register(formData: FormData)  {
         const data = {};
