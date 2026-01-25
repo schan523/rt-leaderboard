@@ -11,6 +11,11 @@ export async function login(prevState: any, formData: FormData) {
         body: JSON.stringify(data)
     });
 
+    if (!response.ok) {
+        return;
+    }
+
     prevState = await response.json();
     return prevState;
+    // return [prevState, data["username"]];
 }

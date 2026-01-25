@@ -1,8 +1,8 @@
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import 'dotenv/config';
 
 import UserService from '../services/user.ts';
-import { errorHandler } from '../middleware/errorHandler';
+import { CustomError, errorHandler } from '../middleware/errorHandler';
 
 const userRouter = express.Router();
 userRouter.use(express.json());
@@ -14,11 +14,16 @@ userRouter.post('/register', async (req: Request, res: Response) => {
     res.status(200).send("User successfully registered: "+jwt);  
 })
 
-userRouter.post('/login', async (req: Request, res: Response) => {
+userRouter.post('/login', async (req: Request, res: Response, next: NextFunction) => {
     const { username, password } = req.body;
     const user = await UserService.login(username, password);
-    req.session.refreshToken = user?.refresh;
-    res.status(200).json(user?.access);
+
+    if (!user) {
+        const error = new CustomError("Invalid or missing login credentials.", 400);
+        return next(error);
+    }
+    req.session.refreshToken = user.refresh;
+    res.status(200).json(user.access);
 })
 
 userRouter.post('/refresh', async (req: Request, res: Response) => {
