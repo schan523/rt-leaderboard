@@ -1,41 +1,45 @@
-import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
-import { useNavigate } from 'react-router';
-import { login } from './actions.ts';
 import { authContextValue } from '../../context/AuthContext.tsx';
 
+import { useNavigate } from 'react-router';
+import { useForm } from 'react-hook-form'; 
+
+type LoginFormData = {
+    username: string,
+    password: string
+}
+
 export function LoginForm() {
-    const [state, loginAction] = useActionState(login, null);
     const { token, setToken } = authContextValue();
+    const { register, handleSubmit } = useForm<LoginFormData>();
+    const navigate = useNavigate();
 
-    console.log(state);
-    let hideError = true;
-    if (state) {
-        setToken(state);
-    } else {
-        hideError = false
+    const onSubmit = async (formData: LoginFormData) => {
+        const data: Record<string, string> = {"username": formData.username, "password": formData.password};
+
+        const response = await fetch('/api/login', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            const accessToken = await response.json();
+            setToken(accessToken);
+            navigate("/", { replace: true });
+        }
     }
-    // setToken(state[0]);
-    // console.log(state[1]);
-
 
     return (
         <div className="login-form-container">
-            { !hideError ? 
-                <div>
-                    <span>Invalid username or password</span>
-                    <br/> <br/>
-                </div> 
-            : <div></div> }
-        
-            <form action={loginAction}>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <label htmlFor="username"> Email </label>
-                <input type="text" name="username" required />
+                <input {...register("username")} />
                 <br />
                 <label htmlFor="password"> Password </label>
-                <input type="password" name="password" required/>
+                <input {...register("password")} /> 
                 <br />
-                < SubmitButton />
+                <SubmitButton />
             </form>
         </div>
     );
