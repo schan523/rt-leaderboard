@@ -10,9 +10,14 @@ type LoginFormData = {
 }
 
 export function LoginForm() {
-    const { token, setToken } = authContextValue();
-    const { register, handleSubmit } = useForm<LoginFormData>();
+    const { setToken } = authContextValue();
+    const { 
+        register, 
+        handleSubmit, 
+        formState: {} 
+    } = useForm<LoginFormData>();
     const navigate = useNavigate();
+    let hideErrorMsg = true;
 
     const onSubmit = async (formData: LoginFormData) => {
         const data: Record<string, string> = {"username": formData.username, "password": formData.password};
@@ -27,6 +32,9 @@ export function LoginForm() {
             const accessToken = await response.json();
             setToken(accessToken);
             navigate("/", { replace: true });
+        } else {
+            hideErrorMsg = false;
+            console.log("this ran");
         }
     }
 
@@ -34,13 +42,13 @@ export function LoginForm() {
         <div className="login-form-container">
             <form onSubmit={handleSubmit(onSubmit)}>
                 <label htmlFor="username"> Email </label>
-                <input {...register("username")} />
+                <input {...register("username", { required: true })} />
                 <br />
                 <label htmlFor="password"> Password </label>
-                <input {...register("password")} /> 
+                <input {...register("password", { required: true })} /> 
                 <br />
                 <SubmitButton />
-            </form>
+            </form> 
         </div>
     );
 }
