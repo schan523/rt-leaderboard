@@ -14,11 +14,9 @@ export function LoginForm() {
     const { 
         register, 
         handleSubmit, 
-        formState: {} 
+        formState: { isSubmitted } 
     } = useForm<LoginFormData>();
     const navigate = useNavigate();
-    let hideErrorMsg = true;
-
     const onSubmit = async (formData: LoginFormData) => {
         const data: Record<string, string> = {"username": formData.username, "password": formData.password};
 
@@ -32,14 +30,12 @@ export function LoginForm() {
             const accessToken = await response.json();
             setToken(accessToken);
             navigate("/", { replace: true });
-        } else {
-            hideErrorMsg = false;
-            console.log("this ran");
         }
     }
 
     return (
         <div className="login-form-container">
+            {isSubmitted && <div> <span> Invalid login credientials. </span> <br /> </div> }
             <form onSubmit={handleSubmit(onSubmit)}>
                 <label htmlFor="username"> Email </label>
                 <input {...register("username", { required: true })} />
