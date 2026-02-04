@@ -14,12 +14,10 @@ export const Navbar = () => {
             const secret = new TextEncoder().encode(import.meta.env.VITE_TOKEN_SECRET);
            const { payload } = await jose.jwtVerify(token, secret);
            setUsername(payload.username);
-            console.log(username);
         }
         fetchUsername();
     }, [token]);
 
-    console.log("this should be the username:", username);
     return (
         <div className="navbar-group">
             <div className="link-border">
