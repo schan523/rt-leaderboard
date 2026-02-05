@@ -8,9 +8,15 @@ const userRouter = express.Router();
 userRouter.use(express.json());
 
 
-userRouter.post('/register', async (req: Request, res: Response) => {
+userRouter.post('/register', async (req: Request, res: Response, next: NextFunction) => {
     const { username, password } = req.body;
     const jwt = await UserService.register(username, password);
+
+    if (!jwt) {
+        const error = new CustomError("A user with this username already exists.");
+        return next(error);
+    }
+
     res.status(200).send("User successfully registered: "+jwt);  
 })
 

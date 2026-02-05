@@ -1,16 +1,18 @@
-// import client from "../loaders/redis.js";
-// import { userSchema } from '../models/user.ts';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import 'dotenv/config';
 
 import db from '../loaders/mongoose.js';
 import { userModel } from '../models/user.js';
-import { CustomError } from './errorHandler.ts';
 
 export default class UserService {
     static async register(username: string, password: string) {        
         await db();
+
+        let checkUser = await userModel.findOne({ username }).select('-__v');
+        if (checkUser) {
+            return;
+        }
 
         const saltRounds = 10;
         let userData = { 

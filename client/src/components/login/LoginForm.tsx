@@ -41,7 +41,7 @@ export function LoginForm() {
                 <input {...register("username", { required: true })} />
                 <br />
                 <label htmlFor="password"> Password </label>
-                <input {...register("password", { required: true })} /> 
+                <input type="password" {...register("password", { required: true })} /> 
                 <br />
                 <SubmitButton />
             </form> 
