@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { authContextValue } from '../../context/AuthContext';
+import { Dropdown } from './Dropdown';
 import '../../styles/Navbar.css';
 
 import * as jose from 'jose'; 
@@ -33,9 +34,7 @@ export const Navbar = () => {
                 <Link to="../score"> Score </Link>
             </div>
             { token &&
-                <div className="link-border">
-                    <span> { username } </span>
-                </div> 
+                <Dropdown user={username} />
             }
         </div>
     );
