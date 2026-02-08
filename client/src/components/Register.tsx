@@ -9,7 +9,8 @@ type RegisterFormData = {
 export const Register = () => {
     const { 
         register,
-        handleSubmit
+        handleSubmit,
+        formState: { errors }
     } = useForm<RegisterFormData>();
     const [showErrorMsg, setShowErrorMsg] = useState(false);
     
@@ -32,7 +33,15 @@ export const Register = () => {
             { showErrorMsg && <span> A user with this username already exists.  </span> }
             <form onSubmit={handleSubmit(onSubmit)}>
                 <label htmlFor="username"> Email </label>
-                <input {...register("username", { required: true })} />
+                <input {...register("username", {
+                    required: true,
+                    pattern: {                    
+                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, 
+                        message: "Invalid email address"
+                    }  
+                    })} 
+                />
+                {errors.username && <div> <span> { errors.username.message } </span> </div> } 
                 <br />
                 <label htmlFor="password"> Password </label>
                 <input type="password" {...register("password", { required: true })} />
@@ -41,16 +50,4 @@ export const Register = () => {
             </form>
         </div>
     );
-
-    // return (
-    //     <form action={register}>
-    //         <label htmlFor="username"> Email </label>
-    //         <input type="text" name="username" required/>
-    //         <br />
-    //         <label htmlFor="password"> Password </label>
-    //         <input type="password" name="password" required />
-    //         <br />
-    //         <button type="submit"> Submit </button>
-    //     </form>
-    // );
 } 

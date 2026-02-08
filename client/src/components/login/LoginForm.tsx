@@ -14,7 +14,7 @@ export function LoginForm() {
     const { 
         register, 
         handleSubmit, 
-        formState: { isSubmitted } 
+        formState: { isSubmitted, errors } 
     } = useForm<LoginFormData>();
     const navigate = useNavigate();
     const onSubmit = async (formData: LoginFormData) => {
@@ -27,7 +27,7 @@ export function LoginForm() {
         });
 
         if (response.ok) {
-            const accessToken = await response.json();
+            const accessToken: string = await response.json();
             setToken(accessToken);
             navigate("/", { replace: true });
         }
@@ -38,7 +38,15 @@ export function LoginForm() {
             {isSubmitted && <div> <span> Invalid login credientials. </span> <br /> </div> }
             <form onSubmit={handleSubmit(onSubmit)}>
                 <label htmlFor="username"> Email </label>
-                <input {...register("username", { required: true })} />
+                <input {...register("username", {
+                    required: true,
+                    pattern: { 
+                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "Invalid email address"
+                    } 
+                }
+                )} 
+                />
+                { errors.username && <div><span> {errors.username.message } </span> </div> }
                 <br />
                 <label htmlFor="password"> Password </label>
                 <input type="password" {...register("password", { required: true })} /> 
