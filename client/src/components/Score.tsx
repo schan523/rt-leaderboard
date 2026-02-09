@@ -1,12 +1,17 @@
+import { useState } from 'react'; 
 import { authContextValue } from '../context/authContext.tsx';
 import { useForm } from 'react-hook-form';
 
 type scoreFormData = {
-
+    game: string,
+    hours: string,
+    minutes: string,
+    seconds: string
 }
 
 export const Score = () => {
-    const { token, setToken } = authContextValue();
+    const { token } = authContextValue();
+    const [showErrors, setShowErrors] = useState(false); 
     const {
         register,
         handleSubmit,
@@ -21,21 +26,35 @@ export const Score = () => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": ""
+                "Authorization": `Bearer ${ token }`
             },
             body: JSON.stringify(data)
-        })
+        });
+
+        if (!response.ok) {
+            setShowErrors(!showErrors);
+        }
     }
 
     return (
         <div>
+            {errors.game && <div><span> Select a game </span> </div> } 
             <form onSubmit={handleSubmit(submit)}>
-                <label htmlFor="game">Select a game </label>
+                <label htmlFor="game">Select a game: </label>
                 <select {...register("game")}>
                     <option value="hollow-knight"> Hollow Knight </option>
                     <option value="silksong"> Silksong </option>
                     <option value="minecraft"> Minecraft </option>
                 </select>
+                <br />
+                <span>
+                    Time:
+                    <input {...register("hours")} />
+                    :
+                    <input {...register("minutes")} />
+                    :
+                    <input {...register("seconds")} />
+                </span>
                 <br />
                 <button type="submit"> Submit </button>
             </form>
