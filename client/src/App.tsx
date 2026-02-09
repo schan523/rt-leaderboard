@@ -3,6 +3,7 @@ import './App.css'
 import { BrowserRouter, Route, Routes } from 'react-router';
 import { Navbar } from './components/layouts/Navbar';
 import { Home } from './components/Home';
+import { Profile } from './components/Profile';
 import { Register } from './components/Register';
 import { Login } from './components/login/Login';
 import { Score } from './components/Score'
@@ -27,6 +28,7 @@ function App() {
             <Route path="/register" element={ <Register/> }/>
             <Route path="/login" element={ <Login /> }/>
             <Route path="/score" element={ <Score /> } />
+            <Route path="/profile" element={ <Profile /> }/>
         </Routes>
       </BrowserRouter>
     </AuthProvider>
