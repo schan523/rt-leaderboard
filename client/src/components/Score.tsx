@@ -7,7 +7,7 @@ type scoreFormData = {
     hours: string,
     minutes: string,
     seconds: string
-}
+};
 
 export const Score = () => {
     const { token } = authContextValue();
@@ -19,7 +19,12 @@ export const Score = () => {
     } = useForm<scoreFormData>();
 
     const submit = async (formData: scoreFormData) => {
-        const data : Record<string, string> = {}
+        const data : Record<string, string> = {
+            "game": formData.game, 
+            "hours": formData.hours, 
+            "minutes": formData.minutes, 
+            "seconds": formData.seconds 
+        }
 
         // Need to store authorization JWT to frontend 
         const response = await fetch('/api/lb/submit', {
@@ -42,7 +47,7 @@ export const Score = () => {
             <form onSubmit={handleSubmit(submit)}>
                 <label htmlFor="game">Select a game: </label>
                 <select {...register("game")}>
-                    <option value="hollow-knight"> Hollow Knight </option>
+                    <option value="hollow-knight">Hollow Knight</option>
                     <option value="silksong"> Silksong </option>
                     <option value="minecraft"> Minecraft </option>
                 </select>
