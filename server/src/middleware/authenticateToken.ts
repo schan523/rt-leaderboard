@@ -6,12 +6,14 @@ import { CustomError } from './errorHandler.ts';
 
 export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
     // const authHeader = req.headers.authentication;
-    if (typeof(req.headers['authentication']) !== 'string') {
+    console.log("the type of req.headers[authorization] is", typeof(req.headers['authorization']))
+
+    if (typeof(req.headers['authorization']) !== 'string') {
         const err = new CustomError("Invalid authentication", 401);
         return next(err);
     }
 
-    const authHeader: string = req.headers['authentication'];
+    const authHeader: string = req.headers['authorization'];
 
     if (!authHeader.startsWith('Bearer')) {
         const err = new CustomError("Invalid credientials", 401);

@@ -8,7 +8,8 @@ const lbRouter = express.Router();
 
 lbRouter.post('/submit', authenticateToken, async (req: Request, res: Response) => {
     const user = res.locals.user;
-    const [game, hours, minutes, seconds] = req.body;
+    console.log(req.body);
+    const { game, hours, minutes, seconds } = req.body;
     console.log("This is running");
     await leaderboardService.submit(user.username, game, hours, minutes, seconds);
     console.log("this successfully ran");
