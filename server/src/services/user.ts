@@ -6,7 +6,7 @@ import db from '../loaders/mongoose.js';
 import { userModel } from '../models/user.js';
 
 export default class UserService {
-    static async register(username: string, password: string) {        
+    static async register(username: string, email: string, password: string) {        
         await db();
 
         let checkUser = await userModel.findOne({ username }).select('-__v');
@@ -16,7 +16,8 @@ export default class UserService {
 
         const saltRounds = 10;
         let userData = { 
-            username: username, 
+            username: username,
+            email: email, 
             password: password, 
             jwt: "" 
         };
@@ -25,7 +26,7 @@ export default class UserService {
             userData.password = hash;
         }
 
-        const user = new userModel({username: username, password: hash});
+        const user = new userModel({username: username, email: email, password: hash});
         await user.save();
         
         userData.jwt = jwt.sign({ username }, process.env.TOKEN_SECRET, { expiresIn: '3600s' });
@@ -33,9 +34,9 @@ export default class UserService {
     }
 
 
-    static async login(username: string, password: string) {
+    static async login(email: string, password: string) {
         await db();
-        let user = await userModel.findOne({ username }).select('-__v');
+        let user = await userModel.findOne({ email }).select('-__v');
         if (!user || !user.password) {
             return;
         }
@@ -48,6 +49,7 @@ export default class UserService {
              jwt: null
         };
         const userId = userData.id;
+        const username = userData.username;
 
         const hashedPassword = user.password;
         const check = await bcrypt.compare(password, hashedPassword);

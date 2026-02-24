@@ -9,8 +9,8 @@ userRouter.use(express.json());
 
 
 userRouter.post('/register', async (req: Request, res: Response, next: NextFunction) => {
-    const { username, password } = req.body;
-    const jwt = await UserService.register(username, password);
+    const { username, email, password } = req.body;
+    const jwt = await UserService.register(username, email, password);
 
     if (!jwt) {
         const error = new CustomError("A user with this username already exists.");
@@ -21,8 +21,8 @@ userRouter.post('/register', async (req: Request, res: Response, next: NextFunct
 })
 
 userRouter.post('/login', async (req: Request, res: Response, next: NextFunction) => {
-    const { username, password } = req.body;
-    const user = await UserService.login(username, password);
+    const { email, password } = req.body;
+    const user = await UserService.login(email, password);
 
     if (!user) {
         const error = new CustomError("Invalid or missing login credentials.", 400);

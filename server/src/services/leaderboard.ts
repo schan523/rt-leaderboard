@@ -10,6 +10,6 @@ export default class leaderboardService {
         const score = new scoreModel({username: username, game: game, hours: parseInt(hours), minutes: parseInt(minutes), seconds: parseInt(seconds)});
         await score.save();
 
-        const res1 = await client.zAdd();
+        // const res1 = await client.zAdd();
     }
 }

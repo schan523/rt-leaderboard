@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 
 type RegisterFormData = {
     username: string,
+    email: string,
     password: string
 }
 
@@ -15,7 +16,7 @@ export const Register = () => {
     const [showErrorMsg, setShowErrorMsg] = useState(false);
     
     const onSubmit = async (formData: RegisterFormData) => {
-        const data: Record<string, string> = {"username": formData.username, "password": formData.password};
+        const data: Record<string, string> = {"username": formData.username, "email": formData.email, "password": formData.password};
 
         const response = await fetch('api/register', {
             method: "POST",
@@ -32,8 +33,11 @@ export const Register = () => {
         <div className="register-form-container">
             { showErrorMsg && <span> A user with this username already exists.  </span> }
             <form onSubmit={handleSubmit(onSubmit)}>
-                <label htmlFor="username"> Email </label>
-                <input {...register("username", {
+                <label htmlFor="username"> Username </label>
+                <input {...register("username", { required: true })} />
+                <br />
+                <label htmlFor="email"> Email </label>
+                <input {...register("email", {
                     required: true,
                     pattern: {                    
                         value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, 
