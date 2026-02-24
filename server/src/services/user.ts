@@ -49,16 +49,17 @@ export default class UserService {
              jwt: null
         };
         const userId = userData.id;
-        const username = userData.username;
+        const userUsername = userData.username;
 
         const hashedPassword = user.password;
         const check = await bcrypt.compare(password, hashedPassword);
 
         if (!check) {
+            console.log(userData);
             return;
         }
 
-        userData.access = jwt.sign({ username }, process.env.TOKEN_SECRET, { expiresIn: '900s' });
+        userData.access = jwt.sign({ userUsername }, process.env.TOKEN_SECRET, { expiresIn: '900s' });
         userData.refresh = jwt.sign({ userId }, process.env.TOKEN_SECRET, { expiresIn: '1d'});
         console.log(userData);
         return userData;
