@@ -18,7 +18,7 @@ export function LoginForm() {
     } = useForm<LoginFormData>();
     const navigate = useNavigate();
     const onSubmit = async (formData: LoginFormData) => {
-        const data: Record<string, string> = {"username": formData.username, "password": formData.password};
+        const data: Record<string, string> = {"email": formData.email, "password": formData.password};
 
         const response = await fetch('/api/login', {
             method: "POST",
@@ -37,8 +37,8 @@ export function LoginForm() {
         <div className="login-form-container">
             {isSubmitted && <div> <span> Invalid login credientials. </span> <br /> </div> }
             <form onSubmit={handleSubmit(onSubmit)}>
-                <label htmlFor="username"> Email </label>
-                <input {...register("username", {
+                <label htmlFor="email"> Email </label>
+                <input {...register("email", {
                     required: true,
                     pattern: { 
                         value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "Invalid email address"

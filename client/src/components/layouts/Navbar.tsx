@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { authContextValue } from '../../context/AuthContext';
+import { authContextValue } from '../../context/authContext';
 import { Dropdown } from './Dropdown';
 import '../../styles/Navbar.css';
 
@@ -12,9 +12,14 @@ export const Navbar = () => {
 
     useEffect(() => {
         const fetchUsername = async () => {
+            if (token == "") {
+                return;
+            }
             const secret = new TextEncoder().encode(import.meta.env.VITE_TOKEN_SECRET);
-           const { payload } = await jose.jwtVerify(token, secret);
-           setUsername(payload.username);
+            const { payload } = await jose.jwtVerify(token, secret);
+            if (typeof(payload.userUsername) == "string") {
+                setUsername(payload.userUsername);
+            }
         }
         fetchUsername();
     }, [token]);

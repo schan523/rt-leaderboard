@@ -1,8 +1,8 @@
-import { authContextValue } from '../context/AuthContext';
+// import { authContextValue } from '../context/AuthContext';
 
 export const Home = () => {
-    const { token } = authContextValue();
-    console.log("this is the homepage receiving context for the access token:", token);
+    // const { token } = authContextValue();
+    // console.log("this is the homepage receiving context for the access token:", token);
 
     return (
         <div>

@@ -14,6 +14,7 @@ export const Register = () => {
         formState: { errors }
     } = useForm<RegisterFormData>();
     const [showErrorMsg, setShowErrorMsg] = useState(false);
+    const [showSuccessMsg, setShowSuccessMsg] = useState(false);
     
     const onSubmit = async (formData: RegisterFormData) => {
         const data: Record<string, string> = {"username": formData.username, "email": formData.email, "password": formData.password};
@@ -27,10 +28,14 @@ export const Register = () => {
         if (!response.ok) {
             setShowErrorMsg(true);
         }
+        else {
+            setShowSuccessMsg(true);
+        }
     }
 
     return (
         <div className="register-form-container">
+            { showSuccessMsg && <span> Registration successful! </span> }
             { showErrorMsg && <span> A user with this username already exists.  </span> }
             <form onSubmit={handleSubmit(onSubmit)}>
                 <label htmlFor="username"> Username </label>
