@@ -7,3 +7,7 @@
     display: inline-block;
     padding: 16px;
 }
+
+.user-dropdown-container {
+    margin-left: auto;
+}

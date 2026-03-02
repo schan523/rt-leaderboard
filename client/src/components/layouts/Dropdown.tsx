@@ -1,6 +1,6 @@
 import { useState } from 'react'; 
 import { useNavigate } from 'react-router';
-import { authContextValue } from '../../context/AuthContext';
+import { authContextValue } from '../../context/authContext';
 
 export const Dropdown = ({ user } : {user: string}) => {
     const [hideDropdown, setHideDropdown] = useState(true);
