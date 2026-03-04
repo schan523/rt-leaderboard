@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form'; 
 
 type LoginFormData = {
-    username: string,
+    email: string,
     password: string
 }
 
