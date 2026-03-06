@@ -6,8 +6,9 @@ import { Home } from './components/Home';
 import { Profile } from './components/Profile';
 import { Register } from './components/Register';
 import { Login } from './components/login/Login';
-import { Score } from './components/Score'
-import { AuthProvider } from './context/AuthContext';
+import { Score } from './components/Score';
+import { Leaderboard } from './components/Leaderboard';
+import { AuthProvider } from './context/authContext';
 
 function App() {
   const [ message, setMessage ] = useState('');
@@ -29,6 +30,7 @@ function App() {
             <Route path="/login" element={ <Login /> }/>
             <Route path="/score" element={ <Score /> } />
             <Route path="/profile" element={ <Profile /> }/>
+            <Route path="/leaderboard" element={ <Leaderboard /> } />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

@@ -7,10 +7,12 @@ const client = createClient({
     username: "default",
     password: process.env.DATABASE_PW,
     socket: {
-        host: 'redis-18762.c261.us-east-1-4.ec2.redns.redis-cloud.com',
-        port: 18762
+        host: 'redis-12653.c245.us-east-1-3.ec2.cloud.redislabs.com',
+        port: 12653
     }
 });
+
+// const client = createClient();
 
 client.on('error', err => console.log('Redis Client Error', err));
 

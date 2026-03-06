@@ -7,9 +7,10 @@ export default class leaderboardService {
     static async submit(username: string, game:string, hours: string, minutes: string, seconds: string) {
         await db();
         // const [hours, minutes, seconds] = time.split(".");
-        const score = new scoreModel({username: username, game: game, hours: parseInt(hours), minutes: parseInt(minutes), seconds: parseInt(seconds)});
-        await score.save();
+        // const score = new scoreModel({username: username, game: game, hours: parseInt(hours), minutes: parseInt(minutes), seconds: parseInt(seconds)});
+        // await score.save();
 
-        const res1 = await client.zAdd('hk_times', {score: 0, value: ''});
+        const res1 = await client.zAdd('hk_times', {score: 1, value: 'testing'});
+        console.log("this is res1", res1);
     }
 }

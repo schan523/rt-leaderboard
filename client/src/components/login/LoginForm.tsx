@@ -1,5 +1,5 @@
 import { useFormStatus } from 'react-dom';
-import { authContextValue } from '../../context/AuthContext.tsx';
+import { authContextValue } from '../../context/authContext.tsx';
 
 import { useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form'; 
