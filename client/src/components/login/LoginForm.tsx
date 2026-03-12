@@ -46,7 +46,7 @@ export function LoginForm() {
                 }
                 )} 
                 />
-                { errors.username && <div><span> {errors.username.message } </span> </div> }
+                { errors.email && <div><span> {errors.email.message } </span> </div> }
                 <br />
                 <label htmlFor="password"> Password </label>
                 <input type="password" {...register("password", { required: true })} /> 
