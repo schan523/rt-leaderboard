@@ -5,8 +5,6 @@ import jwt from 'jsonwebtoken';
 import { CustomError } from './errorHandler.ts';
 
 export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
-    // const authHeader = req.headers.authentication;
-    console.log("the type of req.headers[authorization] is", typeof(req.headers['authorization']))
 
     if (typeof(req.headers['authorization']) !== 'string') {
         const err = new CustomError("Invalid authentication", 401);
