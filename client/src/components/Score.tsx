@@ -1,6 +1,7 @@
 import { useState } from 'react'; 
 import { authContextValue } from '../context/authContext.tsx';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router';
 
 type scoreFormData = {
     game: string,
@@ -17,8 +18,14 @@ export const Score = () => {
         handleSubmit,
         formState: { errors }
     } = useForm<scoreFormData>();
+    const navigate =  useNavigate();
 
     const submit = async (formData: scoreFormData) => {
+        if (token == "") {
+            navigate('/login', { replace: true });
+            return;
+        }
+
         const data : Record<string, string> = {
             "game": formData.game, 
             "hours": formData.hours, 
