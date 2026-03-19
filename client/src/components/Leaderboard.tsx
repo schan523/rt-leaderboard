@@ -2,6 +2,14 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { authContextValue } from '../context/authContext.tsx';
 
+import TableContainer from '@mui/material/TableContainer';
+import Table from '@mui/material/Table';
+import TableHead from '@mui/material/TableHead';
+import TableBody from '@mui/material/TableBody';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+// import Paper from '@mui/material/Paper';
+
 export const Leaderboard = () => {
     const { token } = authContextValue();
     const [board, setBoard] = useState();
@@ -29,7 +37,6 @@ export const Leaderboard = () => {
 
         if (response.ok) {
             let data = await response.json();
-            console.log("this is the board:", data);
             setBoard(data);
         }
     }
@@ -37,7 +44,24 @@ export const Leaderboard = () => {
 
     return (
         <div> 
-            <h2> { board } </h2>    
+            {/* component={Paper} turns the table white */}
+            { board && <TableContainer>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell> Hollow Knight </TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {board.map((row) => (
+                            <TableRow>
+                                <TableCell> {row.value} </TableCell>
+                                <TableCell> {row.score} </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer> }
         </div>
     );
 }
