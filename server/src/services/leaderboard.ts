@@ -20,8 +20,12 @@ export default class leaderboardService {
         console.log("game name:", gameGroup[game], "time:", scoreTime)
     }
 
+
     static async displayBoard() {
         const board = await client.zRangeWithScores('hk_times', 0, -1);
-        return board;
+        const board2 = await client.zRangeWithScores('silksong_times', 0, -1);
+        const board3 = await client.zRangeWithScores('minecraft_times', 0, -1);
+        const boards = {"Hollow Knight": [...board], "Silksong": [...board2], "Minecraft": [...board3]};
+        return boards;
     }
 }
