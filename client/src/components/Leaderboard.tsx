@@ -2,17 +2,12 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { authContextValue } from '../context/authContext.tsx';
 
-import TableContainer from '@mui/material/TableContainer';
-import Table from '@mui/material/Table';
-import TableHead from '@mui/material/TableHead';
-import TableBody from '@mui/material/TableBody';
-import TableRow from '@mui/material/TableRow';
-import TableCell from '@mui/material/TableCell';
+import { Board } from './Board.tsx';
 // import Paper from '@mui/material/Paper';
 
 export const Leaderboard = () => {
     const { token } = authContextValue();
-    const [board, setBoard] = useState();
+    const [boards, setBoards] = useState<any[]>([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -21,47 +16,32 @@ export const Leaderboard = () => {
         }
     }, [token]);
 
+    useEffect(() => {    
+        const render = async () => {
+            if (token == "") { return; }
 
-    const render = async () => {
-        if (token == "") {
-            return;
+            const response = await fetch('/api/lb/board', {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${ token }` 
+                },
+            });
+
+            if (response.ok) {
+                let data = await response.json();
+                setBoards(data);
+            }
         }
+        render();
+    }, [token]);
 
-        const response = await fetch('/api/lb/board', {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${ token }` 
-            },
-        });
-
-        if (response.ok) {
-            let data = await response.json();
-            setBoard(data);
-        }
-    }
-    render();
+    console.log("board info:", boards);
 
     return (
         <div> 
-            {/* component={Paper} turns the table white */}
-            { board && <TableContainer>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell> Hollow Knight </TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {board.map((row) => (
-                            <TableRow>
-                                <TableCell> {row.value} </TableCell>
-                                <TableCell> {row.score} </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer> }
+            { boards && Object.entries(boards).map(([key, value]) => ( <Board game={key} board={value} /> )) }
+            {/* {boards.length > 0 && <Board game={"Hollow Knight"} board={boards[0]} />} */}
         </div>
     );
 }
