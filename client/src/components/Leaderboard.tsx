@@ -40,8 +40,7 @@ export const Leaderboard = () => {
 
     return (
         <div> 
-            { boards && Object.entries(boards).map(([key, value]) => ( <Board game={key} board={value} /> )) }
-            {/* {boards.length > 0 && <Board game={"Hollow Knight"} board={boards[0]} />} */}
+            { boards && Object.entries(boards).map(([key, value], index) => ( <Board game={key} board={value} key={index}/> )) }
         </div>
     );
 }
