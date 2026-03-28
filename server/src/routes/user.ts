@@ -29,6 +29,7 @@ userRouter.post('/login', async (req: Request, res: Response, next: NextFunction
         return next(error);
     }
     req.session.refreshToken = user.refresh;
+    req.session.accessToken = user.access;
     res.status(200).json(user.access);
 })
 
