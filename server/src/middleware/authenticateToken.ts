@@ -18,6 +18,10 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
         return next(err);
     }
 
+    // Checking to see if http-only cookie info is properly transmitted
+    const accToken = req.cookies.accessToken;
+    console.log("cookie token:", accToken);
+
     const token = authHeader.split(' ')[1];
     jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
         if (err) {

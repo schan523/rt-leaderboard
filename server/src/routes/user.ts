@@ -21,6 +21,7 @@ userRouter.post('/register', async (req: Request, res: Response, next: NextFunct
 })
 
 userRouter.post('/login', async (req: Request, res: Response, next: NextFunction) => {
+    console.log("this prints");
     const { email, password } = req.body;
     const user = await UserService.login(email, password);
 
