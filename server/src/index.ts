@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import cookieParser from 'cookie-parser';
 import session from 'express-session';
 
 import { userRouter } from './routes/user';
@@ -8,16 +9,15 @@ const app = express();
 const port = 3000;
 
 app.set('trust proxy', 1);
+app.use(cookieParser());
 
 // sameSite: 'strict'
-// consider adding a session store: connect-redis or mongodb
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: true,
-    cookie: { 
-        httpOnly: true,
-        secure: false,
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: true, 
         maxAge: 86400000
     }
 }));

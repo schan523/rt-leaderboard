@@ -21,7 +21,6 @@ userRouter.post('/register', async (req: Request, res: Response, next: NextFunct
 })
 
 userRouter.post('/login', async (req: Request, res: Response, next: NextFunction) => {
-    console.log("this prints");
     const { email, password } = req.body;
     const user = await UserService.login(email, password);
 
@@ -29,14 +28,20 @@ userRouter.post('/login', async (req: Request, res: Response, next: NextFunction
         const error = new CustomError("Invalid or missing login credentials.", 400);
         return next(error);
     }
-    req.session.refreshToken = user.refresh;
-    req.session.accessToken = user.access;
+    res.cookie('refreshToken', user.refresh, {
+        httpOnly: true,
+        maxAge: 60 * 60 * 24 * 1000
+    });
+    res.cookie('accessToken', user.access, {
+        httpOnly: true,
+        maxAge: 15 * 60 * 1000
+    });
     res.status(200).json(user.access);
 })
 
 userRouter.post('/refresh', async (req: Request, res: Response) => {
     // when access token expires, check for a refresh token. If not present, return "session expired". Otherwise, generate a new access token.
-    const newToken = UserService.refresh(req.session.refreshToken);
+    const newToken = UserService.refresh(req.cookies.refreshToken);
     if (!newToken) {
         res.status(401).send("Session expired");
     }

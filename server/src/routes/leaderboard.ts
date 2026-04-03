@@ -9,7 +9,7 @@ const lbRouter = express.Router();
 lbRouter.post('/submit', authenticateToken, async (req: Request, res: Response) => {
     const user = res.locals.user;
     const { game, hours, minutes, seconds } = req.body;
-    await leaderboardService.submit(user.username, game, hours, minutes, seconds);
+    await leaderboardService.submit(user.userUsername, game, hours, minutes, seconds);
     res.status(200).send("Score successfully submitted");
 })
  

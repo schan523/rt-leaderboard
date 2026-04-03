@@ -8,7 +8,8 @@ export const customFetch = async (url: string, params: RequestInit) => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
-                }
+                },
+                credentials: 'include'
             });
             if (!refreshResponse.ok) {
                 throw new Error("Refresh failed");

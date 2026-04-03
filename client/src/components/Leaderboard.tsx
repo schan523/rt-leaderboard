@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { authContextValue } from '../context/authContext.tsx';
+import { customFetch } from '../helpers/index.ts';
 
 import { Board } from './Board.tsx';
 // import Paper from '@mui/material/Paper';
@@ -20,12 +21,13 @@ export const Leaderboard = () => {
         const render = async () => {
             if (token == "") { return; }
 
-            const response = await fetch('/api/lb/board', {
+            const response = await customFetch('/api/lb/board', {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${ token }` 
                 },
+                credentials: 'include'
             });
 
             if (response.ok) {

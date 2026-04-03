@@ -5,25 +5,14 @@ import jwt from 'jsonwebtoken';
 import { CustomError } from './errorHandler.ts';
 
 export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
-
-    if (typeof(req.headers['authorization']) !== 'string') {
-        const err = new CustomError("Invalid authentication", 401);
-        return next(err);
-    }
-
-    const authHeader: string = req.headers['authorization'];
-
-    if (!authHeader.startsWith('Bearer')) {
-        const err = new CustomError("Invalid credientials", 401);
-        return next(err);
-    }
-
     // Checking to see if http-only cookie info is properly transmitted
     const accToken = req.cookies.accessToken;
-    console.log("cookie token:", accToken);
-
-    const token = authHeader.split(' ')[1];
-    jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
+    if (!accToken) {
+        const err = new CustomError("Invalid credentials", 401);
+        return next(err);
+    }
+    
+    jwt.verify(accToken, process.env.TOKEN_SECRET, (err, decoded) => {
         if (err) {
             const err = new CustomError("Invalid token.");
             return next(err);

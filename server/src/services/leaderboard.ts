@@ -16,8 +16,8 @@ export default class leaderboardService {
             "minecraft": "minecraft_times"
         }
 
-        const res1 = await client.zAdd(gameGroup[game], {score: scoreTime, value: 'testing'});
-        console.log("game name:", gameGroup[game], "time:", scoreTime)
+        const res1 = await client.zAdd(gameGroup[game], {score: scoreTime, value: username});
+        console.log("game name:", gameGroup[game], "time:", scoreTime);
     }
 
 
