@@ -36,7 +36,7 @@ userRouter.post('/login', async (req: Request, res: Response, next: NextFunction
         httpOnly: true,
         maxAge: 15 * 60 * 1000
     });
-    res.status(200).json(user.access);
+    res.status(200).json(user.username);
 })
 
 userRouter.post('/refresh', async (req: Request, res: Response) => {

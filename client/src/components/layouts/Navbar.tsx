@@ -15,11 +15,12 @@ export const Navbar = () => {
             if (token == "") {
                 return;
             }
-            const secret = new TextEncoder().encode(import.meta.env.VITE_TOKEN_SECRET);
-            const { payload } = await jose.jwtVerify(token, secret);
-            if (typeof(payload.userUsername) == "string") {
-                setUsername(payload.userUsername);
-            }
+            // const secret = new TextEncoder().encode(import.meta.env.VITE_TOKEN_SECRET);
+            // const { payload } = await jose.jwtVerify(token, secret);
+            // if (typeof(payload.userUsername) == "string") {
+            //     setUsername(payload.userUsername);
+            // }
+            setUsername(token);
         }
         fetchUsername();
     }, [token]);
