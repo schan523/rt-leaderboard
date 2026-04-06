@@ -1,4 +1,5 @@
 import express, { NextFunction, Request, Response } from 'express';
+import cookieParser from 'cookie-parser';
 import 'dotenv/config';
 
 import UserService from '../services/user.ts';
@@ -45,7 +46,11 @@ userRouter.post('/refresh', async (req: Request, res: Response) => {
     if (!newToken) {
         res.status(401).send("Session expired");
     }
-    res.send(200).json(newToken);
+    res.cookie('accessToken', newToken, {
+        httpOnly: true,
+        maxAge: 15 * 60 * 1000
+    });
+    res.send(200);
 })
 
 userRouter.use(errorHandler);

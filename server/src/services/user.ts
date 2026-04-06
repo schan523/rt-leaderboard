@@ -79,6 +79,6 @@ export default class UserService {
 
         const payload = jwt.verify(token, process.env.TOKEN_SECRET);
 
-        return jwt.sign({ payload }, process.env.TOKEN_SECRET, { expiresIn: '3600s' });
+        return jwt.sign({ payload }, process.env.TOKEN_SECRET, { expiresIn: '900s' });
     }
 }
