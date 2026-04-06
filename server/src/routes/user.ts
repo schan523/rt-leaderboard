@@ -33,9 +33,10 @@ userRouter.post('/login', async (req: Request, res: Response, next: NextFunction
         httpOnly: true,
         maxAge: 60 * 60 * 24 * 1000
     });
+    // Temporarily setting access token max age to 60s to test refresh mechanicism
     res.cookie('accessToken', user.access, {
         httpOnly: true,
-        maxAge: 15 * 60 * 1000
+        maxAge: 60 * 1000
     });
     res.status(200).json(user.username);
 })
@@ -48,7 +49,7 @@ userRouter.post('/refresh', async (req: Request, res: Response) => {
     }
     res.cookie('accessToken', newToken, {
         httpOnly: true,
-        maxAge: 15 * 60 * 1000
+        maxAge: 60 * 1000
     });
     res.send(200);
 })

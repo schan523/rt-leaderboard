@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { ObjectId } from 'mongodb';
 import 'dotenv/config';
 
 import db from '../loaders/mongoose.js';
@@ -59,17 +60,15 @@ export default class UserService {
             return;
         }
 
-        userData.access = jwt.sign({ userUsername }, process.env.TOKEN_SECRET, { expiresIn: '900s' });
+        userData.access = jwt.sign({ userUsername }, process.env.TOKEN_SECRET, { expiresIn: '60s' });
         userData.refresh = jwt.sign({ userId }, process.env.TOKEN_SECRET, { expiresIn: '1d'});
         console.log(userData);
         return userData;
     }
 
     
-    static refresh(token: string | undefined) {
-        if (!token) {
-            return;
-        }
+    static async refresh(token: string | undefined) {
+        if (!token) { return; }
 
         try {
             let payload = jwt.verify(token, process.env.TOKEN_SECRET);
@@ -79,6 +78,16 @@ export default class UserService {
 
         const payload = jwt.verify(token, process.env.TOKEN_SECRET);
 
-        return jwt.sign({ payload }, process.env.TOKEN_SECRET, { expiresIn: '900s' });
+        await db();
+        try {
+            const user = await userModel.findById(payload.id);
+            console.log("user found for refreshing access token is:", user);
+        } catch (err) {
+            console.error(err);
+        }
+
+
+        const userUsername = user?.username;
+        return jwt.sign({ userUsername }, process.env.TOKEN_SECRET, { expiresIn: '60s' });
     }
 }

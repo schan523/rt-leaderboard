@@ -19,8 +19,7 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
         }
 
         res.locals.user = decoded;
-        // res['locals'] = { user: decoded };
-    })
+    });
 
     next();
 }
