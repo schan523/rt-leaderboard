@@ -18,7 +18,7 @@ userRouter.post('/register', async (req: Request, res: Response, next: NextFunct
         return next(error);
     }
 
-    res.status(200).send("User successfully registered: "+jwt);  
+    res.status(200).send("User successfully registered");  
 })
 
 userRouter.post('/login', async (req: Request, res: Response, next: NextFunction) => {
@@ -33,23 +33,23 @@ userRouter.post('/login', async (req: Request, res: Response, next: NextFunction
         httpOnly: true,
         maxAge: 60 * 60 * 24 * 1000
     });
-    // Temporarily setting access token max age to 60s to test refresh mechanicism
     res.cookie('accessToken', user.access, {
         httpOnly: true,
-        maxAge: 60 * 1000
+        maxAge: 15 * 60 * 1000
     });
     res.status(200).json(user.username);
 })
 
 userRouter.post('/refresh', async (req: Request, res: Response) => {
     // when access token expires, check for a refresh token. If not present, return "session expired". Otherwise, generate a new access token.
-    const newToken = UserService.refresh(req.cookies.refreshToken);
+    const newToken = await UserService.refresh(req.cookies.refreshToken);
     if (!newToken) {
         res.status(401).send("Session expired");
     }
+    console.log("access token generated", newToken);
     res.cookie('accessToken', newToken, {
         httpOnly: true,
-        maxAge: 60 * 1000
+        maxAge: 15 * 60 * 1000
     });
     res.send(200);
 })

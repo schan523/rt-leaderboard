@@ -1,6 +1,5 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { ObjectId } from 'mongodb';
 import 'dotenv/config';
 
 import db from '../loaders/mongoose.js';
@@ -38,9 +37,7 @@ export default class UserService {
     static async login(email: string, password: string) {
         await db();
         let user = await userModel.findOne({ email }).select('-__v');
-        if (!user || !user.password) {
-            return;
-        }
+        if (!user || !user.password) { return; }
 
         let userData: {username: string, password: string, id: string, access?: string, refresh?: string} = 
         {
@@ -60,7 +57,7 @@ export default class UserService {
             return;
         }
 
-        userData.access = jwt.sign({ userUsername }, process.env.TOKEN_SECRET, { expiresIn: '60s' });
+        userData.access = jwt.sign({ userUsername }, process.env.TOKEN_SECRET, { expiresIn: '900s' });
         userData.refresh = jwt.sign({ userId }, process.env.TOKEN_SECRET, { expiresIn: '1d'});
         console.log(userData);
         return userData;
@@ -79,15 +76,11 @@ export default class UserService {
         const payload = jwt.verify(token, process.env.TOKEN_SECRET);
 
         await db();
-        try {
-            const user = await userModel.findById(payload.id);
-            console.log("user found for refreshing access token is:", user);
-        } catch (err) {
-            console.error(err);
+        const user = await userModel.findById(payload.userId);
+        if (user) {
+            const userUsername = user.username;
+            return jwt.sign({ userUsername }, process.env.TOKEN_SECRET, { expiresIn: '900s' });
         }
-
-
-        const userUsername = user?.username;
-        return jwt.sign({ userUsername }, process.env.TOKEN_SECRET, { expiresIn: '60s' });
+        return;
     }
 }

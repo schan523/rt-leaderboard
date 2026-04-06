@@ -3,6 +3,8 @@ import { authContextValue } from '../context/authContext.tsx';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 
+import { customFetch } from '../helpers/index.ts';
+
 type scoreFormData = {
     game: string,
     hours: string,
@@ -34,7 +36,7 @@ export const Score = () => {
         }
 
         // Need to store authorization JWT to frontend 
-        const response = await fetch('/api/lb/submit', {
+        const response = await customFetch('/api/lb/submit', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -44,6 +46,9 @@ export const Score = () => {
 
         if (!response.ok) {
             setShowErrors(!showErrors);
+        }
+        else {
+            navigate('/', { replace: true });
         }
     }
 
