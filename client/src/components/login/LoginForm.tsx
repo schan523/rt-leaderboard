@@ -27,8 +27,9 @@ export function LoginForm() {
         });
 
         if (response.ok) {
-            const accessToken: string = await response.json();
-            setToken(accessToken);
+            const username: string = await response.json();
+            setToken(username);
+            localStorage.setItem("username", username);
             navigate("/", { replace: true });
         }
     }

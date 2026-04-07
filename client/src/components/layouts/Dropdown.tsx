@@ -11,8 +11,13 @@ export const Dropdown = ({ user } : {user: string}) => {
         setHideDropdown(!hideDropdown);
     }
 
-    const logout = () => {
+    const logout = async () => {
         setToken("");
+        localStorage.removeItem("username");
+        await fetch('/api/logout', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" }
+        });
         navigate("/", { replace: true });
     }
 

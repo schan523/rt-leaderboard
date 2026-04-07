@@ -4,26 +4,23 @@ import { authContextValue } from '../../context/authContext';
 import { Dropdown } from './Dropdown';
 import '../../styles/Navbar.css';
 
-import * as jose from 'jose'; 
-
 export const Navbar = () => {
     const { token } = authContextValue();
-    const [username, setUsername] = useState("");
+    const [username, setUsername] = useState(null);
+
+    console.log("username is:", localStorage.getItem("username"));
+    let usern = localStorage.getItem("username") || "";
 
     useEffect(() => {
         const fetchUsername = async () => {
-            if (token == "") {
+            if (!localStorage.getItem("username")) {
+                setUsername(null);
                 return;
             }
-            // const secret = new TextEncoder().encode(import.meta.env.VITE_TOKEN_SECRET);
-            // const { payload } = await jose.jwtVerify(token, secret);
-            // if (typeof(payload.userUsername) == "string") {
-            //     setUsername(payload.userUsername);
-            // }
-            setUsername(token);
+            setUsername(localStorage.getItem("username"));
         }
         fetchUsername();
-    }, [token]);
+    }, [localStorage.getItem("username")]);
 
     return (
         <div className="navbar-group">
@@ -42,8 +39,8 @@ export const Navbar = () => {
             <div className="link-border">
                 <Link to="../leaderboard"> Leaderboard </Link>
             </div>
-            { token &&
-                <Dropdown user={username} />
+            { username &&
+                <Dropdown user={usern} />
             }
         </div>
     );

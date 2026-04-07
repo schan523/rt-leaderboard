@@ -23,7 +23,7 @@ export const Score = () => {
     const navigate =  useNavigate();
 
     const submit = async (formData: scoreFormData) => {
-        if (token == "") {
+        if (!localStorage.getItem("username")) {
             navigate('/login', { replace: true });
             return;
         }

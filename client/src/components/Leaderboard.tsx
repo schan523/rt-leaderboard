@@ -11,22 +11,22 @@ export const Leaderboard = () => {
     const [boards, setBoards] = useState<any[]>([]);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (token == "") {
-            navigate("/login", { replace: true });
-        }
-    }, [token]);
+    // useEffect(() => {
+    //     if (token == "") {
+    //         navigate("/login", { replace: true });
+    //     }
+    // }, [token]);
 
     useEffect(() => {    
         const render = async () => {
-            if (token == "") { return; }
+            // if (!localStorage.getItem("username")) { return; }
 
             const response = await customFetch('/api/lb/board', {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                credentials: 'include'
+                // credentials: 'include'
             });
 
             if (response.ok) {

@@ -14,7 +14,7 @@ lbRouter.post('/submit', authenticateToken, async (req: Request, res: Response) 
     res.status(200).send("Score successfully submitted");
 })
  
-lbRouter.get('/board', authenticateToken, async (req: Request, res: Response) => {
+lbRouter.get('/board', /*authenticateToken,*/ async (req: Request, res: Response) => {
     const boards = await leaderboardService.displayBoard();
     res.status(200).send(boards);
 })

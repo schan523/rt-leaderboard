@@ -40,8 +40,24 @@ userRouter.post('/login', async (req: Request, res: Response, next: NextFunction
     res.status(200).json(user.username);
 })
 
+userRouter.post('/logout', async (req: Request, res: Response) => {
+    if (req.cookies.accessToken && req.cookies.refreshToken) {
+        res.clearCookie('accessToken', {
+            httpOnly: true,
+            maxAge: 15 * 60 * 1000
+        });
+        res.clearCookie('refreshToken', {
+            httpOnly: true,
+            maxAge: 24 * 60 * 60 * 1000
+        })
+
+        res.status(200).send("User successfully logged out");
+    }
+    
+    res.status(401).send("Valid access and refresh tokens could not be found");
+})
+
 userRouter.post('/refresh', async (req: Request, res: Response) => {
-    // when access token expires, check for a refresh token. If not present, return "session expired". Otherwise, generate a new access token.
     const newToken = await UserService.refresh(req.cookies.refreshToken);
     if (!newToken) {
         res.status(401).send("Session expired");
