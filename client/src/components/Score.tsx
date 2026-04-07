@@ -1,5 +1,4 @@
 import { useState } from 'react'; 
-import { authContextValue } from '../context/authContext.tsx';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 
@@ -13,7 +12,6 @@ type scoreFormData = {
 };
 
 export const Score = () => {
-    const { token } = authContextValue();
     const [showErrors, setShowErrors] = useState(false); 
     const {
         register,
