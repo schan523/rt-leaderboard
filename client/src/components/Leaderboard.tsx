@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router';
+// import { useNavigate } from 'react-router';
 import { authContextValue } from '../context/authContext.tsx';
 import { customFetch } from '../helpers/index.ts';
 
@@ -9,7 +9,7 @@ import { Board } from './Board.tsx';
 export const Leaderboard = () => {
     const { token } = authContextValue();
     const [boards, setBoards] = useState<any[]>([]);
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     // useEffect(() => {
     //     if (token == "") {
