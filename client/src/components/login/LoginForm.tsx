@@ -30,6 +30,7 @@ export function LoginForm() {
             const username: string = await response.json();
             setToken(username);
             localStorage.setItem("username", username);
+            document.dispatchEvent( new StorageEvent("storage", {key: "username", newValue: username}));
             navigate("/", { replace: true });
         }
     }

@@ -14,6 +14,7 @@ export const Dropdown = ({ user } : {user: string}) => {
     const logout = async () => {
         setToken("");
         localStorage.removeItem("username");
+        document.dispatchEvent( new StorageEvent("storage", {key: "username", newValue: null}));
         await fetch('/api/logout', {
             method: "POST",
             headers: { "Content-Type": "application/json" }

@@ -1,26 +1,30 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import { Link } from 'react-router-dom';
-import { authContextValue } from '../../context/authContext';
 import { Dropdown } from './Dropdown';
 import '../../styles/Navbar.css';
 
+const store = {
+    getSnapshot: () => localStorage.getItem("username"),
+    subscribe: (listener: () => void) => {
+        document.addEventListener("storage", listener);
+        return () => document.removeEventListener("storage", listener);
+    }
+};
+
 export const Navbar = () => {
-    const { token } = authContextValue();
-    const [username, setUsername] = useState(null);
+    // useEffect(() => {
+    //     const fetchUsername = async () => {
+    //         if (!localStorage.getItem("username")) {
+    //             setUsername(null);
+    //             return;
+    //         }
+    //         setUsername(localStorage.getItem("username"));
+    //     }
+    //     fetchUsername();
+    // }, [localStorage.getItem("username")]);
 
-    console.log("username is:", localStorage.getItem("username"));
-    let usern = localStorage.getItem("username") || "";
 
-    useEffect(() => {
-        const fetchUsername = async () => {
-            if (!localStorage.getItem("username")) {
-                setUsername(null);
-                return;
-            }
-            setUsername(localStorage.getItem("username"));
-        }
-        fetchUsername();
-    }, [localStorage.getItem("username")]);
+    const userName = useSyncExternalStore(store.subscribe, store.getSnapshot);
 
     return (
         <div className="navbar-group">
@@ -39,8 +43,8 @@ export const Navbar = () => {
             <div className="link-border">
                 <Link to="../leaderboard"> Leaderboard </Link>
             </div>
-            { username &&
-                <Dropdown user={usern} />
+            { userName &&
+                <Dropdown user={userName} />
             }
         </div>
     );

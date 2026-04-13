@@ -53,8 +53,10 @@ userRouter.post('/logout', async (req: Request, res: Response) => {
 
         res.status(200).send("User successfully logged out");
     }
+    else {
+        res.status(401).send("Valid access and refresh tokens could not be found");
+    }
     
-    res.status(401).send("Valid access and refresh tokens could not be found");
 })
 
 userRouter.post('/refresh', async (req: Request, res: Response) => {
